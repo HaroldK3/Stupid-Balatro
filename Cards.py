@@ -37,6 +37,17 @@ def discard(deck_id, pile_name, cards_played):
     return data
 
 
+def return_cards(deck_id, pile_name):
+    url = f"https://deckofcardsapi.com/api/deck/{deck_id}/pile/{pile_name}/return/"
+    response = requests.get(url)
+    response.raise_for_status()
+
+    data = response.json()
+    return data
+
+
+
+
 
 def clear():
     if os.name == 'nt':
