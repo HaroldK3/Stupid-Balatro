@@ -46,9 +46,6 @@ def return_cards(deck_id, pile_name):
     return data
 
 
-
-
-
 def clear():
     if os.name == 'nt':
         _ = os.system('cls')
