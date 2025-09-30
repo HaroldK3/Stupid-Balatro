@@ -26,6 +26,17 @@ def draw_card(deck_id):
     return cards
 
 
+def discard(deck_id, pile_name, cards_played):
+    cards = ",".join(cards_played)
+
+    url = f"https://deckofcardsapi.com/api/deck/{deck_id}pile/{pile_name}/add/?cards={cards}"
+    response = requests.get(url)
+    response.raise_for_status()
+
+    data = response.json()
+    return data
+
+
 
 def clear():
     if os.name == 'nt':
@@ -33,6 +44,8 @@ def clear():
     else:
         _ = os.system('clear')
 
+
+## Testing the code to make sure it works as we go
 
 deck = shuffle_new_deck()
 
