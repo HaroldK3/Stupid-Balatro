@@ -45,6 +45,24 @@ def return_cards(deck_id, pile_name):
     data = response.json()
     return data
 
+def select_card(hand, max_cards=5):
+    print("Your hand")
+    for i, card in enumerate(hand, start=1):
+        print(f"{i}: {card['value']} of {card['suit']}")
+
+    while True:
+        print("/nSelect up to 5 cards to play: ")
+        choice = input().strip()
+        try:
+            nums = list(map(int, choice.split()))
+            if 1 <= len(nums) <= max_cards and all(1 <= i <= len(hand) for i in nums):
+                return [hand[choice -1] for i in nums]
+            else: 
+                print("Invalid choice. Try again.")
+        except ValueError:
+            print("Please enter a number.")
+
+
 
 def clear():
     if os.name == 'nt':
