@@ -1,4 +1,5 @@
 import Cards
+import Hand_Scoring
 import requests
 import os
 
@@ -12,13 +13,15 @@ while not game_over:
     user_input = int(input())
 
     if user_input == 1:
+        score = 0
         Cards.clear()
         done = False
         deck = Cards.shuffle_new_deck()
 
         while not done:
             hand = Cards.draw_card(deck)
-            Cards.select_card(hand)
+            played_cards = Cards.select_card(hand)
+            score = score + Hand_Scoring.scoring_hand(played_cards)
 
 
 
