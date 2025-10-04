@@ -4,7 +4,7 @@ import os
 from collections import Counter
 
 card_values = {
-    "ACE": 14 or 2, "KING": 13, "QUEEN": 12, "JACK": 11, "10": 10, "9": 9, "8": 8, "7": 7, "6": 6, "5": 5, "4": 4, "3": 3, "2": 2
+    "ACE": 14, "KING": 13, "QUEEN": 12, "JACK": 11, "10": 10, "9": 9, "8": 8, "7": 7, "6": 6, "5": 5, "4": 4, "3": 3, "2": 2
 }
 
 high_card_multi = 1
@@ -19,6 +19,9 @@ straight_flush_multi = 8
 
 
 def find_hand(cards_picked):
+    if not cards_picked:
+        return "No cards"
+
     values = sorted([card_values[card["value"]] for card in cards_picked], reverse=True)
     value_counts = Counter(values)
 
@@ -32,26 +35,30 @@ def find_hand(cards_picked):
                 len(set(values)) == 5
                )
     
+    if set(values) == {14, 2, 3, 4, 5}:
+        straight = True
+    
     if straight and flush:
         return "Straight Flush"
+    elif 4 in value_counts.values():
+        return "Four of a Kind"
+    elif sorted(value_counts.values()) == [2, 3]:
+        return "Full House"
     elif flush:
         return "Flush"
     elif straight:
         return "Straight"
-    elif 4 in value_counts.values():
-        return "Four of a Kind"
     elif 3 in value_counts.values():
         return "Three of a Kind"
-    elif 2 in value_counts.values():
-        return "Pair"
     elif list(value_counts.values()).count(2) == 2:
         return "Two Pair"
-    elif sorted(value_counts.values()) == [2, 3]:
-        return "Full House"
+    elif 2 in value_counts.values():
+        return "Pair"
     elif len(values) > 0:
-        return "High Card" 
+        return "High Card"
     else:
         return "No scorable hand."
+
     
 
 def score_hand(hand_name):

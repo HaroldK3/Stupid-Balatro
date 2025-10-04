@@ -27,13 +27,16 @@ def draw_card(deck_id):
 
 
 def discard(deck_id, pile_name, cards_played):
-    cards = ",".join(cards_played)
+    card_codes = [card["code"] for card in cards_played]
+    cards = ",".join(card_codes)
 
-    url = f"https://deckofcardsapi.com/api/deck/{deck_id}pile/{pile_name}/add/?cards={cards}"
+    url = f"https://deckofcardsapi.com/api/deck/{deck_id}/pile/{pile_name}/add/?cards={cards}"
     response = requests.get(url)
     response.raise_for_status()
 
     data = response.json()
+    print(f"Added {cards_played} to {pile_name}")
+    
     return data
 
 
@@ -46,10 +49,6 @@ def return_cards(deck_id, pile_name):
     return data
 
 def select_card(hand, max_cards=5):
-    print("Your hand")
-    for i, card in enumerate(hand, start=1):
-        print(f"{i}: {card['value']} of {card['suit']}")
-
     while True:
         print("\nSelect up to 5 cards to play: ")
         choice = input().strip()
@@ -69,16 +68,3 @@ def clear():
         _ = os.system('cls')
     else:
         _ = os.system('clear')
-
-
-## Testing the code to make sure it works as we go
-
-deck = shuffle_new_deck()
-
-hand = draw_card(deck)
-
-players_hand = [f"{card['value']} of {card['suit']}" for card in hand]
-
-clear()
-
-print(" | ".join(players_hand))
