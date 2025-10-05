@@ -28,7 +28,7 @@ def find_hand(cards_picked):
     suits = [card["suit"] for card in cards_picked]
     suit_counts = Counter(suits)
 
-    flush = len(suit_counts) == 1
+    flush = len(suit_counts) == 1 and len(cards_picked) == 5
     straight = (
                 len(values) == 5 and 
                 max(values) - min(values) == 4 and
@@ -40,20 +40,20 @@ def find_hand(cards_picked):
     
     if straight and flush:
         return "Straight Flush"
-    elif 4 in value_counts.values():
-        return "Four of a Kind"
-    elif sorted(value_counts.values()) == [2, 3]:
-        return "Full House"
     elif flush:
         return "Flush"
     elif straight:
         return "Straight"
+    elif 4 in value_counts.values():
+        return "Four of a Kind"
     elif 3 in value_counts.values():
         return "Three of a Kind"
-    elif list(value_counts.values()).count(2) == 2:
-        return "Two Pair"
     elif 2 in value_counts.values():
         return "Pair"
+    elif list(value_counts.values()).count(2) == 2:
+        return "Two Pair"
+    elif sorted(value_counts.values()) == [2, 3]:
+        return "Full House"
     elif len(values) > 0:
         return "High Card"
     else:

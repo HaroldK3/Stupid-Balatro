@@ -9,15 +9,23 @@ def shuffle_new_deck():
         data = response.json()
         deck_id = data["deck_id"]
         print("Deck successfully created.")
-        print(data)
     else:
         print(f"Error making deck: {response.reason}")
     
     return deck_id
 
+def shuffle(deck_id):
+    url = f"https://deckofcardsapi.com/api/deck/{deck_id}/shuffle/"
+    response = requests.get(url)
+    response.raise_for_status()
 
-def draw_card(deck_id):
-    url = f"https://deckofcardsapi.com/api/deck/{deck_id}/draw/?count=8"
+    data = response.json()
+    return data
+
+
+
+def draw_card(deck_id, count):
+    url = f"https://deckofcardsapi.com/api/deck/{deck_id}/draw/?count={count}"
     response = requests.get(url)
     response.raise_for_status()
 
@@ -35,7 +43,6 @@ def discard(deck_id, pile_name, cards_played):
     response.raise_for_status()
 
     data = response.json()
-    print(f"Added {cards_played} to {pile_name}")
     
     return data
 

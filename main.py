@@ -15,10 +15,12 @@ while not game_over:
     if user_input == 1:
         score = 0
         round = 1
-        score_goal = 300
+        score_goal = 150
+        discard = 5
         Cards.clear()
         done = False
         deck = Cards.shuffle_new_deck()
+        hand = Cards.draw_card(deck, 8)
 
         while not done:
             hands = 4
@@ -29,33 +31,67 @@ while not game_over:
             while hands > 0:
                 ## Play
                 print(f"\nHands left: {hands}")
-                hand = Cards.draw_card(deck)
                 print("\nYour hand:")
                 for i, card in enumerate(hand, start=1):
                     print(f"{i}. {card['value']} of {card['suit']}")
 
-                played_cards = Cards.select_card(hand, 5)
 
-                ## Score
-                played_hand_name = Hand_Scoring.find_hand(played_cards)
-                points_scored = Hand_Scoring.score_hand(played_hand_name)
-                score = score + points_scored
+                print("\nWhat would you like to do?")
+                print("1. Play a hand")
+                print("2. Discard some cards")
+                choice = input()
 
-                print(f"You scored {points_scored} this round with a {played_hand_name}!")
-                print(f"You now have a total of {score} points!")
+                if choice == "1":
+                    played_cards = Cards.select_card(hand, 5)
 
-                Cards.discard(deck, "Discard", played_cards)
+                    ## Score
+                    played_hand_name = Hand_Scoring.find_hand(played_cards)
+                    points_scored = Hand_Scoring.score_hand(played_hand_name)
+                    score = score + points_scored
 
-                ## Round over?
-                if score >= score_goal:
-                    print(f"\nCongragulations, you beat round {round}!")
-                    round += 1
-                    score_goal = int(score_goal * 1.5)
-                    Cards.return_cards(deck, "Discard")
+                    print(f"You scored {points_scored} this round with a {played_hand_name}!")
+                    print(f"You now have a total of {score} points!")
+
+                    Cards.discard(deck, "Discard", played_cards)
+                    for card in played_cards:
+                        hand.remove(card)
+                    
+                    new_cards = Cards.draw_card(deck, 8 - len(hand))
+                    hand.extend(new_cards)
+
+                    ## Round over?
+                    if score >= score_goal:
+                        print(f"\nCongratulations, you beat round {round}!")
+                        round += 1
+                        score_goal = int(score_goal * 1.3 + 100)
+                        score = 0
+                        Cards.return_cards(deck, "Discard")
+                        Cards.shuffle(deck)
+                        break
+
+                    hands -= 1
                     break
 
-                hands -= 1
+                elif choice == "2":
+                    print("Which cards woud you lke to discard?")
+                    discarded_cards = Cards.select_card(hand, 5)
+                    Cards.discard(deck, "Discard", discarded_cards)
 
+                    discard -= 1
+
+                    for card in discarded_cards:
+                        hand.remove(card)
+                    
+                    print("\nYou discarded:")
+                    for c in discarded_cards:
+                        print(f"{c['value']} of {c['suit']}")
+
+                    new_cards = Cards.draw_card(deck, 8 - len(hand))
+                    hand.extend(new_cards)
+                
+                else:
+                    print("Not an option, try again.")
+                    
             if score < score_goal:
                 print(f"You didn't beat {score_goal}. Game over.")
                 print(f"Final score: {score}")
@@ -64,8 +100,6 @@ while not game_over:
                 cont = input("\nPlay next round? (y/n): ").lower()
                 if cont != "y":
                     done = True
-                
-
 
     elif user_input == 2:
         print("Bye bye!!")
