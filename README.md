@@ -12,4 +12,6 @@ A dumbed down version of the game Balatro using Chase Robert's Deck of Cards API
 
 -Once I got all of the game functionality going, I realized I didn't have a way to shuffle the deck after I put the cards from the discard pile back, so that was weird. 
 
--I hope to add the planet cards before the deadline. I have a way to keep track of the multiplier, though I may need to move that from Hand_Scoring to main. 
+-Discarding also went wrong, because I forgot that the hand is my call and not the API's, so I had to go back and make sure it was updating the hand as well as discarding the cards from the deck to the discard pile. Shew.
+
+-I hope to add the planet cards before the deadline. I have a way to keep track of the multiplier, though I may need to move that from Hand_Scoring to main if I'm gonna do planet cards. Honestly, I may can make a whole planet card file and put them there.  
