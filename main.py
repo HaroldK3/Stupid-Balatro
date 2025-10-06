@@ -1,7 +1,5 @@
 import Cards
 import Hand_Scoring
-import requests
-import os
 
 game_over = False
 
