@@ -16,7 +16,6 @@ while not game_over:
         score = 0
         round = 1
         score_goal = 150
-        discard = 5
         Cards.clear()
         done = False
         deck = Cards.shuffle_new_deck()
@@ -24,6 +23,7 @@ while not game_over:
 
         while not done:
             hands = 4
+            discard = 5
             print(f"\n--- Round {round} ---")
             print(f"Score needed to win this round: {score_goal}")
             print(f"Total score: {score}")
@@ -68,26 +68,29 @@ while not game_over:
                         Cards.return_cards(deck, "Discard")
                         Cards.shuffle(deck)
                         break
+                        
 
                     hands -= 1
-                    break
 
                 elif choice == "2":
-                    print("Which cards woud you lke to discard?")
-                    discarded_cards = Cards.select_card(hand, 5)
-                    Cards.discard(deck, "Discard", discarded_cards)
+                    if discard == 0:
+                        print("Out of discards! Sorry!")
+                    else:
+                        print("Which cards woud you lke to discard?")
+                        discarded_cards = Cards.select_card(hand, 5)
+                        Cards.discard(deck, "Discard", discarded_cards)
 
-                    discard -= 1
+                        discard -= 1
 
-                    for card in discarded_cards:
-                        hand.remove(card)
-                    
-                    print("\nYou discarded:")
-                    for c in discarded_cards:
-                        print(f"{c['value']} of {c['suit']}")
+                        for card in discarded_cards:
+                            hand.remove(card)
+                        
+                        print("\nYou discarded:")
+                        for c in discarded_cards:
+                            print(f"{c['value']} of {c['suit']}")
 
-                    new_cards = Cards.draw_card(deck, 8 - len(hand))
-                    hand.extend(new_cards)
+                        new_cards = Cards.draw_card(deck, 8 - len(hand))
+                        hand.extend(new_cards)
                 
                 else:
                     print("Not an option, try again.")
