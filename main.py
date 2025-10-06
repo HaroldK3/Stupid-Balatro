@@ -23,11 +23,11 @@ while not game_over:
             hands = 4
             discard = 5
             print(f"\n--- Round {round} ---")
-            print(f"Score needed to win this round: {score_goal}")
-            print(f"Total score: {score}")
 
             while hands > 0:
                 ## Play
+                print(f"Score needed to win this round: {score_goal}")
+                print(f"Total score: {score}")
                 print(f"\nHands left: {hands}")
                 print("\nYour hand:")
                 for i, card in enumerate(hand, start=1):
