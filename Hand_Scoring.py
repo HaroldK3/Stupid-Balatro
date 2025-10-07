@@ -48,6 +48,8 @@ def find_hand(cards_picked):
         return "Full House"
     elif 4 in value_counts.values():
         return "Four of a Kind"
+    elif list(value_counts.values()).count(2) == 2:
+        return "Two Pair"
     elif 3 in value_counts.values():
         return "Three of a Kind"
     elif 2 in value_counts.values():

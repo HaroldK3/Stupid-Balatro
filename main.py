@@ -18,7 +18,6 @@ while not game_over:
         hands = 4
         round = 1
         score_goal = 150
-        discard = 5
         Cards.clear()
         done = False
         deck = Cards.shuffle_new_deck()
@@ -93,7 +92,7 @@ while not game_over:
 
                     for card in discarded_cards:
                         hand.remove(card)
-                    
+                        
                     print("\nYou discarded:")
                     for c in discarded_cards:
                         print(f"{c['value']} of {c['suit']}")
