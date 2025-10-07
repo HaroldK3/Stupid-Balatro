@@ -44,6 +44,8 @@ def find_hand(cards_picked):
         return "Flush"
     elif straight:
         return "Straight"
+    elif sorted(value_counts.values()) == [2, 3]:
+        return "Full House"
     elif 4 in value_counts.values():
         return "Four of a Kind"
     elif 3 in value_counts.values():
@@ -52,8 +54,6 @@ def find_hand(cards_picked):
         return "Pair"
     elif list(value_counts.values()).count(2) == 2:
         return "Two Pair"
-    elif sorted(value_counts.values()) == [2, 3]:
-        return "Full House"
     elif len(values) > 0:
         return "High Card"
     else:

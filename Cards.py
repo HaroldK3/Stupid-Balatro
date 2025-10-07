@@ -57,7 +57,7 @@ def return_cards(deck_id, pile_name):
 
 def select_card(hand, max_cards=5):
     while True:
-        print("\nSelect up to 5 cards to play: ")
+        print("\nSelect up to 5 cards to play (x x x x x): ")
         choice = input().strip()
         try:
             nums = list(map(int, choice.split()))

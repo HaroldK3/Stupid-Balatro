@@ -1,5 +1,6 @@
 import Cards
 import Hand_Scoring
+import time
 import requests
 import os
 
@@ -14,6 +15,7 @@ while not game_over:
 
     if user_input == 1:
         score = 0
+        hands = 4
         round = 1
         score_goal = 150
         discard = 5
@@ -23,13 +25,14 @@ while not game_over:
         hand = Cards.draw_card(deck, 8)
 
         while not done:
-            hands = 4
-            print(f"\n--- Round {round} ---")
-            print(f"Score needed to win this round: {score_goal}")
-            print(f"Total score: {score}")
+
+            round_won = False
 
             while hands > 0:
                 ## Play
+                print(f"\n--- Round {round} ---")
+                print(f"Score needed to win this round: {score_goal}")
+                print(f"Total score: {score}")
                 print(f"\nHands left: {hands}")
                 print("\nYour hand:")
                 for i, card in enumerate(hand, start=1):
@@ -58,6 +61,7 @@ while not game_over:
                     
                     new_cards = Cards.draw_card(deck, 8 - len(hand))
                     hand.extend(new_cards)
+                    Cards.clear()
 
                     ## Round over?
                     if score >= score_goal:
@@ -65,14 +69,22 @@ while not game_over:
                         round += 1
                         score_goal = int(score_goal * 1.3 + 100)
                         score = 0
+                        hands = 4
+                        discard = 5
                         Cards.return_cards(deck, "Discard")
                         Cards.shuffle(deck)
-                        break
+                        round_won = True
+                        continue
 
                     hands -= 1
-                    break
 
                 elif choice == "2":
+                    if discard == 0: 
+                        Cards.clear()
+                        print("Sorry, you're out of discards.") 
+                        time.sleep(3)
+                        continue
+
                     print("Which cards woud you lke to discard?")
                     discarded_cards = Cards.select_card(hand, 5)
                     Cards.discard(deck, "Discard", discarded_cards)
@@ -92,7 +104,7 @@ while not game_over:
                 else:
                     print("Not an option, try again.")
                     
-            if score < score_goal:
+            if not round_won:
                 print(f"You didn't beat {score_goal}. Game over.")
                 print(f"Final score: {score}")
                 done = True
